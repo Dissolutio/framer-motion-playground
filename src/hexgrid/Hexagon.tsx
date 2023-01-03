@@ -10,9 +10,9 @@ type HexagonProps = HexCoordinates & {
   children?: React.ReactNode | React.ReactNode[];
 };
 
-type H = { data?: any; state: { hex: HexCoordinates }; props: HexagonProps };
+type H = { state: { hex: HexCoordinates }; props: HexagonProps; data?: any };
 
-export type HexagonMouseEventHandler = (
+type HexagonMouseEventHandler = (
   event: React.MouseEvent<SVGGElement, MouseEvent>,
   h: H
 ) => void;

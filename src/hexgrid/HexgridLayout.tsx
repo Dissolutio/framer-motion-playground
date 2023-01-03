@@ -112,7 +112,9 @@ export function HexgridLayoutProvider({
 export function useLayoutContext() {
   const ctx = React.useContext(Context);
   if (ctx === undefined) {
-    throw new Error("useLayoutContext must be used within a BgioGProvider");
+    throw new Error(
+      "useLayoutContext must be used within a HexgridLayoutProvider"
+    );
   }
   return ctx;
 }
