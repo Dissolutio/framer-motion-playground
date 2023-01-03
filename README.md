@@ -1,3 +1,23 @@
+# Whole idea
+https://github.com/fireship-io/framer-demo/blob/framer-motion-demo/src/App.js
+# Modal
+https://fireship.io/lessons/framer-motion-modal/
+
+## Notification
+https://fireship.io/lessons/framer-motion-advanced-notifications/
+
+
+**************************************************************************************************
+**************************************************************************************************
+**************************************************************************************************
+**************************************************************************************************
+**************************************************************************************************
+**************************************************************************************************
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
