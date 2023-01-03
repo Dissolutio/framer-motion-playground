@@ -1,7 +1,7 @@
 import * as React from "react";
 import { LayoutDimension, Point, Size } from "./types";
 
-export type LayoutContextProps = {
+export type LayoutContext = {
   layout: LayoutDimension;
   points: string;
 };
@@ -32,20 +32,7 @@ const defaultSize = { x: 10, y: 10 };
 const defaultOrigin = { x: 0, y: 0 };
 const defaultSpacing = 1.0;
 
-const Context = React.createContext<LayoutContextProps>({
-  layout: {
-    size: defaultSize,
-    orientation: LAYOUT_FLAT,
-    origin: defaultOrigin,
-    spacing: defaultSpacing,
-  },
-  points: "",
-});
-
-export function useLayoutContext() {
-  const ctx = React.useContext(Context);
-  return ctx;
-}
+const Context = React.createContext<LayoutContext | undefined>(undefined);
 
 /**
  * Calculates the points for a hexagon given the size, angle, and center
@@ -90,7 +77,7 @@ export type LayoutProps = {
 /**
  * Provides LayoutContext for all descendants and renders child elements inside a <g> (Group) element
  */
-export function HexgridLayout({
+export function HexgridLayoutProvider({
   size = defaultSize,
   flat = true,
   spacing = defaultSpacing,
@@ -120,4 +107,12 @@ export function HexgridLayout({
       <g className={className}>{children}</g>
     </Context.Provider>
   );
+}
+
+export function useLayoutContext() {
+  const ctx = React.useContext(Context);
+  if (ctx === undefined) {
+    throw new Error("useLayoutContext must be used within a BgioGProvider");
+  }
+  return ctx;
 }

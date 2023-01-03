@@ -1,11 +1,12 @@
 import React from "react";
-import { HexgridLayout } from "./HexgridLayout";
-import { GridGenerator, HexUtils } from "react-hexgrid";
+import { HexgridLayoutProvider } from "./HexgridLayout";
 import Hexagon from "./Hexagon";
 import "./BasicHexgrid.css";
 import { useWindowSize } from "../useWindowSize";
 import { HexCoordinates } from "./types";
 import { HexText } from "./HexText";
+import { hexUtilsSubtract } from "./hex-utils";
+import { generateRectangleHexgrid } from "./hex-utils copy";
 
 export const Hexgrid = () => {
   const size = useWindowSize();
@@ -13,12 +14,12 @@ export const Hexgrid = () => {
   const shiftMapToOrigin = (hexes: HexCoordinates[]): HexCoordinates[] => {
     const northWestHex = hexes[0];
     const newHexes = hexes.map((hex) => {
-      return HexUtils.subtract(hex, northWestHex);
+      return hexUtilsSubtract(hex, northWestHex);
     });
     return newHexes;
   };
   // const hexagons = shiftMapToOrigin(GridGenerator.parallelogram(0, 2, 0, 2));
-  const hexagons = GridGenerator.rectangle(4, 4);
+  const hexagons = generateRectangleHexgrid(4, 4);
   const hexagonSize = 5;
   // const hexagons = shiftMapToOrigin(GridGenerator.hexagon(1));
   return (
@@ -33,7 +34,7 @@ export const Hexgrid = () => {
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <HexgridLayout
+        <HexgridLayoutProvider
           size={{ x: hexagonSize, y: hexagonSize }}
           spacing={1.0}
           flat={false}
@@ -51,7 +52,7 @@ export const Hexgrid = () => {
               </Hexagon>
             ))}
           </>
-        </HexgridLayout>
+        </HexgridLayoutProvider>
       </svg>
     </div>
   );

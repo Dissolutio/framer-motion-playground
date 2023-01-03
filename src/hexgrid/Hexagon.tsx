@@ -1,19 +1,16 @@
 import * as React from "react";
-import classNames from "classnames";
-import { Hex, HexUtils } from "react-hexgrid";
 import { useLayoutContext } from "./HexgridLayout";
+import { HexCoordinates } from "./types";
+import { hexUtilsHexToPixel } from "./hex-utils";
 
-type HexagonProps = {
-  q: number;
-  r: number;
-  s: number;
+type HexagonProps = HexCoordinates & {
   data?: any;
   onClick?: HexagonMouseEventHandler;
   className?: string;
   children?: React.ReactNode | React.ReactNode[];
 };
 
-type H = { data?: any; state: { hex: Hex }; props: HexagonProps };
+type H = { data?: any; state: { hex: HexCoordinates }; props: HexagonProps };
 
 export type HexagonMouseEventHandler = (
   event: React.MouseEvent<SVGGElement, MouseEvent>,
@@ -27,8 +24,8 @@ export function Hexagon(props: HexagonProps) {
   const { q, r, s, data, onClick, className, children } = props;
   const { layout, points } = useLayoutContext();
   const { hex, pixel } = React.useMemo(() => {
-    const hex = new Hex(q, r, s);
-    const pixel = HexUtils.hexToPixel(hex, layout);
+    const hex = { q, r, s };
+    const pixel = hexUtilsHexToPixel(hex, layout);
     return {
       hex,
       pixel,
@@ -39,12 +36,10 @@ export function Hexagon(props: HexagonProps) {
 
   return (
     <g
-      className={classNames("hexagon-group", className)}
+      className={`hexagon-group ${className ?? ""}`}
       transform={`translate(${pixel.x}, ${pixel.y})`}
       onClick={(e) => {
-        if (onClick) {
-          onClick(e, { data, state, props });
-        }
+        onClick?.(e, { data, state, props });
       }}
     >
       <g className="hexagon">
