@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { HexgridLayoutProvider } from "./HexgridLayout";
+import { UncontrolledReactSVGPanZoom } from "react-svg-pan-zoom";
 import Hexagon from "./Hexagon";
 import "./hexgrid-styles.css";
 import { HexCoordinates } from "./types";
@@ -10,9 +11,11 @@ import {
   generateRectangleHexgrid,
 } from "./hex-utils copy";
 import styled from "styled-components";
+import { useWindowSize } from "../useWindowSize";
 
 export const Hexgrid = () => {
-  // const size = useWindowSize();
+  const size = useWindowSize();
+  console.log("🚀 ~ file: Hexgrid.tsx:17 ~ Hexgrid ~ size", size);
   const hexagonSize = 10;
   const mapSize = 10;
   const mapHeight = 17;
@@ -32,36 +35,52 @@ export const Hexgrid = () => {
 
   // const hexagons = generateHexagonHexgrid(mapSize);
   // const viewbox = calculateViewbox("unshiftedHexagon", mapSize, hexagonSize);
+  const viewer = useRef(null);
 
+  useEffect(() => {
+    const currentViewer = viewer.current;
+    if (currentViewer) {
+      (currentViewer as any)?.fitToViewer?.();
+    }
+  }, []);
+  if (!size) {
+    return null;
+  }
   return (
     <StyledDiv>
-      <svg
-        width={"100%"}
-        height={"100%"}
-        viewBox={viewbox}
-        style={{ background: "indianred" }}
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
+      <UncontrolledReactSVGPanZoom
+        ref={viewer}
+        width={size?.width ?? 300}
+        height={size?.height ?? 300}
       >
-        <HexgridLayoutProvider
-          size={{ x: hexagonSize, y: hexagonSize }}
-          spacing={1.0}
-          flat={false}
+        <svg
+          width={"100%"}
+          height={"100%"}
+          viewBox={viewbox}
+          style={{ background: "indianred" }}
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <>
-            {/* <polygon points="0,20 10,5 10,15 20,0" /> */}
-            {/* <circle cx="0" cy="0" r="10" /> */}
-            {hexagons.map((hex, i) => (
-              <Hexagon key={i} q={hex.q} r={hex.r} s={hex.s}>
-                <HexText
-                  hexSize={hexagonSize}
-                  y={0}
-                >{`${hex.q},${hex.r},${hex.s}`}</HexText>
-              </Hexagon>
-            ))}
-          </>
-        </HexgridLayoutProvider>
-      </svg>
+          <HexgridLayoutProvider
+            size={{ x: hexagonSize, y: hexagonSize }}
+            spacing={1.0}
+            flat={false}
+          >
+            <>
+              {/* <polygon points="0,20 10,5 10,15 20,0" /> */}
+              {/* <circle cx="0" cy="0" r="10" /> */}
+              {hexagons.map((hex, i) => (
+                <Hexagon key={i} q={hex.q} r={hex.r} s={hex.s}>
+                  <HexText
+                    hexSize={hexagonSize}
+                    y={0}
+                  >{`${hex.q},${hex.r},${hex.s}`}</HexText>
+                </Hexagon>
+              ))}
+            </>
+          </HexgridLayoutProvider>
+        </svg>
+      </UncontrolledReactSVGPanZoom>
     </StyledDiv>
   );
 };
