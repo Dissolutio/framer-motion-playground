@@ -65,7 +65,6 @@ export type LayoutProps = {
     | React.ReactElement[]
     | JSX.Element
     | JSX.Element[];
-  className?: string;
   flat?: boolean;
   origin?: any;
   /* defines scale */
@@ -83,7 +82,6 @@ export function HexgridLayoutProvider({
   spacing = defaultSpacing,
   origin = defaultOrigin,
   children,
-  className,
   ...rest
 }: LayoutProps) {
   const orientation = flat ? LAYOUT_FLAT : LAYOUT_POINTY;
@@ -104,7 +102,7 @@ export function HexgridLayoutProvider({
         points,
       }}
     >
-      <g className={className}>{children}</g>
+      {children}
     </Context.Provider>
   );
 }
