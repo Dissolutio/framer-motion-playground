@@ -1,6 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HexgridLayoutProvider } from "./HexgridLayout";
-import { UncontrolledReactSVGPanZoom } from "react-svg-pan-zoom";
+import {
+  ReactSVGPanZoom,
+  Tool,
+  Value,
+  fitSelection,
+  zoomOnViewerCenter,
+  fitToViewer,
+} from "react-svg-pan-zoom";
 import Hexagon from "./Hexagon";
 import "./hexgrid-styles.css";
 import { HexCoordinates } from "./types";
@@ -15,13 +22,36 @@ import { useWindowSize } from "../useWindowSize";
 
 export const Hexgrid = () => {
   const size = useWindowSize();
-  console.log("🚀 ~ file: Hexgrid.tsx:17 ~ Hexgrid ~ size", size);
   const hexagonSize = 10;
   const mapSize = 10;
   const mapHeight = 17;
   const mapWidth = 33;
 
   const hexagons = generateRectangleHexgrid(mapWidth, mapHeight);
+  const [tool, setTool] = useState<Tool>("none");
+  const [value, setValue] = useState<Value | null>(null);
+  const setWeirdValue = () => {
+    setValue({
+      version: 2,
+      mode: "panning",
+      focus: true,
+      a: 0,
+      b: 0,
+      c: 0,
+      d: 0,
+      e: 0,
+      f: 0,
+      viewerWidth: 300,
+      viewerHeight: 300,
+      SVGWidth: 300,
+      SVGHeight: 300,
+      startX: 0,
+      startY: 0,
+      endX: 300,
+      endY: 300,
+      miniatureOpen: false,
+    });
+  };
   const viewbox = calculateViewbox(
     "rectangle",
     mapSize,
@@ -43,15 +73,26 @@ export const Hexgrid = () => {
       (currentViewer as any)?.fitToViewer?.();
     }
   }, []);
+
   if (!size) {
     return null;
   }
   return (
     <StyledDiv>
-      <UncontrolledReactSVGPanZoom
+      <ReactSVGPanZoom
         ref={viewer}
         width={size?.width ?? 300}
         height={size?.height ?? 300}
+        tool={tool}
+        onChangeTool={setTool}
+        value={value}
+        // onChangeValue={setValue}
+        onChangeValue={setWeirdValue}
+        onZoom={(e) => console.log("zoom")}
+        onPan={(e) => console.log("pan")}
+        onClick={(event) =>
+          console.log("click", event.x, event.y, event.originalEvent)
+        }
       >
         <svg
           width={"100%"}
@@ -80,7 +121,7 @@ export const Hexgrid = () => {
             </>
           </HexgridLayoutProvider>
         </svg>
-      </UncontrolledReactSVGPanZoom>
+      </ReactSVGPanZoom>
     </StyledDiv>
   );
 };
