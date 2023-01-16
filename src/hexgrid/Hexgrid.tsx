@@ -10,6 +10,7 @@ import {
   generateRectangleHexgrid,
 } from "./hex-utils";
 import styled from "styled-components";
+import { Hexes } from "./Hexes";
 
 export const Hexgrid = () => {
   // const size = useWindowSize();
@@ -51,14 +52,7 @@ export const Hexgrid = () => {
           <>
             {/* <polygon points="0,20 10,5 10,15 20,0" /> */}
             {/* <circle cx="0" cy="0" r="10" /> */}
-            {hexagons.map((hex, i) => (
-              <Hexagon key={i} q={hex.q} r={hex.r} s={hex.s}>
-                <HexText
-                  hexSize={hexagonSize}
-                  y={0}
-                >{`${hex.q},${hex.r},${hex.s}`}</HexText>
-              </Hexagon>
-            ))}
+            <Hexes hexSize={hexagonSize} hexes={hexagons} />
           </>
         </HexgridLayoutProvider>
       </svg>
