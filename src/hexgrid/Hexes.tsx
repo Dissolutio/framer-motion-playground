@@ -28,15 +28,16 @@ export const Hexes = ({ hexSize, hexes }: MapHexesProps) => {
         >
           <g>
             {generateHexID(hex) === idWithUnit && (
-              <UnitIcon hexSize={hexSize} />
+              <AnimatePresence initial={false}>
+                <motion.g
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <UnitIcon hexSize={hexSize} />
+                </motion.g>
+              </AnimatePresence>
             )}
-            <AnimatePresence initial={false}>
-              <motion.g
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              ></motion.g>
-            </AnimatePresence>
             <HexIDText
               hexSize={hexSize}
               text={generateHexID(hex)}

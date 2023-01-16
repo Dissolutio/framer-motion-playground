@@ -1,9 +1,7 @@
 import React from "react";
 import { HexgridLayoutProvider } from "./HexgridLayout";
-import Hexagon from "./Hexagon";
 import "./hexgrid-styles.css";
 import { HexCoordinates } from "./types";
-import { HexText } from "./HexText";
 import {
   hexUtilsSubtract,
   generateHexagonHexgrid,
