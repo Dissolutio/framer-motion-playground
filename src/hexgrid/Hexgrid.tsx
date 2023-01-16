@@ -4,11 +4,11 @@ import Hexagon from "./Hexagon";
 import "./hexgrid-styles.css";
 import { HexCoordinates } from "./types";
 import { HexText } from "./HexText";
-import { hexUtilsSubtract } from "./hex-utils";
 import {
+  hexUtilsSubtract,
   generateHexagonHexgrid,
   generateRectangleHexgrid,
-} from "./hex-utils copy";
+} from "./hex-utils";
 import styled from "styled-components";
 
 export const Hexgrid = () => {
